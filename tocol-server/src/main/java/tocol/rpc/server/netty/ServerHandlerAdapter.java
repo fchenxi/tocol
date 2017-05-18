@@ -14,7 +14,6 @@ public class ServerHandlerAdapter extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        // TODO Auto-generated method stub
         super.channelUnregistered(ctx);
         System.out.println("Client disconnect...");
         ChannelManagerServerSingle.remove(hostName, ctx.channel());
@@ -25,7 +24,8 @@ public class ServerHandlerAdapter extends ChannelInboundHandlerAdapter {
     private final String hostName;
     private final Server server;
 
-    public ServerHandlerAdapter(Server server, ReceivedHandle<Channel> receivedHandle, String hostName) {
+    public ServerHandlerAdapter(Server server, ReceivedHandle<Channel> receivedHandle, String
+            hostName) {
         super();
         this.server = server;
         this.receivedHandle = receivedHandle;
@@ -35,19 +35,21 @@ public class ServerHandlerAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
             throws Exception {
-         /*心跳处理*/
+        // do heartbeat
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
-                /*读超时*/
-                System.out.println("读超时:" + ctx.channel() + "\t" + ChannelManagerServerSingle.getChannelManagerMap().get(hostName).size());
+                // read timeout
+                System.out.println("read timeout: " + ctx.channel() + "\t" +
+                        ChannelManagerServerSingle
+                        .getChannelManagerMap().get(hostName).size());
                 ChannelManagerServerSingle.remove(hostName, ctx.channel());
             } else if (event.state() == IdleState.WRITER_IDLE) {
-                /*写超时*/
-                System.out.println("WRITER_IDLE 写超时");
+                // write timeout
+                System.out.println("WRITER_IDLE timeout");
             } else if (event.state() == IdleState.ALL_IDLE) {
-                /*总超时*/
-                System.out.println("ALL_IDLE 总超时");
+                // timeout
+                System.out.println("ALL_IDLE timeout");
 
             }
         }
@@ -55,10 +57,8 @@ public class ServerHandlerAdapter extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // TODO Auto-generated method stub
         ChannelManager manager = new ServerChannelManager(server, ctx.channel(), hostName);
         ChannelManagerServerSingle.put(hostName, manager);
-
     }
 
     @Override
@@ -77,7 +77,8 @@ public class ServerHandlerAdapter extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
         ChannelManagerServerSingle.remove(hostName, ctx.channel());
-        System.out.println("断开连接:" + ctx.channel() + "\t" + ChannelManagerServerSingle.getChannelManagerMap().get(hostName).size());
+        System.out.println("close connection: " + ctx.channel() + "\t" +
+                ChannelManagerServerSingle.getChannelManagerMap().get(hostName).size());
 
     }
 }

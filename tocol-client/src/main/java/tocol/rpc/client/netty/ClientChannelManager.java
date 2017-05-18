@@ -15,7 +15,6 @@ public class ClientChannelManager extends ChannelManager {
 	public ClientChannelManager(Channel channel, Client client,String hostName) {
 		super(channel,hostName);
 		this.client = client;
-		// TODO Auto-generated constructor stub
 	}
 
 }

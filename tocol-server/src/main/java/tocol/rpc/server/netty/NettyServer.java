@@ -26,69 +26,68 @@ import tocol.rpc.server.conf.ChannelManagerServerSingle;
 import tocol.rpc.server.netty.handle.ServerReceivedHandle;
 import tocol.rpc.server.netty.handle.ServerSendHandle;
 
-public class NettyServer extends AbstractServer{
-	
-	private static Logger log=LoggerFactory.getLogger(NettyServer.class);
-	private int port = 8081;
-	private EventLoopGroup bossGroup = null;
-	private EventLoopGroup workerGroup = null;
-	private ServerBootstrap b = null;
-	private SendHandle<Channel> sendHandle;
-	private Protocol<ByteBuf> protocol;
+public class NettyServer extends AbstractServer {
 
-	private String hostName;
-	public NettyServer(int port) {
-		super();
-		this.port = port;
-		this.hostName=String.valueOf(port);
-	}
+    private static Logger log = LoggerFactory.getLogger(NettyServer.class);
+    private int port = 8081;
+    private EventLoopGroup bossGroup = null;
+    private EventLoopGroup workerGroup = null;
+    private ServerBootstrap b = null;
+    private SendHandle<Channel> sendHandle;
+    private Protocol<ByteBuf> protocol;
 
-	private ReceivedHandle<Channel> receivedHandle;
+    private String hostName;
 
-	public static void main(String[] args) {
-		int PORT = 8081;
-		Server server = new NettyServer(PORT);
-		server.start();
-	}
+    public NettyServer(int port) {
+        super();
+        this.port = port;
+        this.hostName = String.valueOf(port);
+    }
 
-	@Override
-	public void start() {
-		// TODO Auto-generated method stub
-		sendHandle = new ServerSendHandle();
-		protocol = new NettyProtocol();
-		receivedHandle = new ServerReceivedHandle(sendHandle, protocol);
-		bossGroup = new NioEventLoopGroup(1);
-		workerGroup = new NioEventLoopGroup();
-		try {
-			b = new ServerBootstrap();
-			b.group(bossGroup, workerGroup)
-					.channel(NioServerSocketChannel.class)
-					.handler(new LoggingHandler(LogLevel.INFO))
-					.childHandler(
-							new ServerChannelPipelineFactory(this,receivedHandle,protocol,hostName));
-			b.bind(port);
-			log.info("Start Server Port "+port);
-		} catch(Exception e){
-			log.error("Server Error", e);
-		}finally {
+    private ReceivedHandle<Channel> receivedHandle;
 
-		}
-	}
+    public static void main(String[] args) {
+        int PORT = 8081;
+        Server server = new NettyServer(PORT);
+        server.start();
+    }
 
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		Map<String, List<ChannelManager>> maps=ChannelManagerServerSingle.getChannelManagerMap();
-		for(String key:maps.keySet()){
-			try {
-				ChannelManagerServerSingle.close(key);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		bossGroup.shutdownGracefully();
-		workerGroup.shutdownGracefully();
-	}
+    @Override
+    public void start() {
+        sendHandle = new ServerSendHandle();
+        protocol = new NettyProtocol();
+        receivedHandle = new ServerReceivedHandle(sendHandle, protocol);
+        bossGroup = new NioEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup();
+        try {
+            b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new ServerChannelPipelineFactory(this, receivedHandle,
+                            protocol, hostName));
+            b.bind(port);
+            log.info("Start Server Port " + port);
+        } catch (Exception e) {
+            log.error("Server Error", e);
+        } finally {
+
+        }
+    }
+
+    @Override
+    public void stop() {
+        Map<String, List<ChannelManager>> maps = ChannelManagerServerSingle.getChannelManagerMap();
+        for (String key : maps.keySet()) {
+            try {
+                ChannelManagerServerSingle.close(key);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+    }
 
 }

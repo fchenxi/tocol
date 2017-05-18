@@ -23,70 +23,73 @@ import tocol.rpc.protocol.params.Constants;
 public class NettyClient extends AbstractClient {
 
     private final Hosts host;
-	private String hostName;
-	private ReceivedHandle<Channel> receivedHandle = null;
-	private EventLoopGroup group = null;
-	private Bootstrap b = null;
-	private Channel nowChannel = null;
-	private Protocol<ByteBuf> protocol;
+    private String hostName;
+    private ReceivedHandle<Channel> receivedHandle = null;
+    private EventLoopGroup group = null;
+    private Bootstrap b = null;
+    private Channel nowChannel = null;
+    private Protocol<ByteBuf> protocol;
 
-	public NettyClient(Hosts host) {
-		super();
-		this.host = host;
-		this.hostName = host.getHost() + ":" + host.getPort();
-		protocol = new NettyProtocol();
-		receivedHandle = new ClientReceivedHandle(protocol);
-		group = new NioEventLoopGroup();
+    public NettyClient(Hosts host) {
+        super();
+        this.host = host;
+        this.hostName = host.getHost() + ":" + host.getPort();
+        protocol = new NettyProtocol();
+        receivedHandle = new ClientReceivedHandle(protocol);
+        group = new NioEventLoopGroup();
 
-		b = new Bootstrap();
-		b.group(group).channel(NioSocketChannel.class)
-				.handler(new ClientInitializer(hostName, receivedHandle,protocol));
-	}
+        b = new Bootstrap();
+        b.group(group).channel(NioSocketChannel.class)
+                .handler(new ClientInitializer(hostName, receivedHandle, protocol));
+    }
 
-	@Override
-	public void connect() {
-		try {
-			System.out.println("开始连接");
-			ChannelFuture future = b.connect(host.getHost(), host.getPort());
-			boolean ret = future.awaitUninterruptibly(Constants.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS);
-			if (ret && future.isSuccess()) {
-				Channel newChannel = future.channel();
-				nowChannel = newChannel;
-				ChannelManager channelManager = new ClientChannelManager(newChannel, this,hostName);
-				channelManager.setConnectCount(host.getConnectionCount());
-				ChannelManagerClientSingle.put(hostName, channelManager);
-				System.out.println("新连接:"+nowChannel+"\t"+ChannelManagerClientSingle.getChannelManagerMap().get(hostName).size());
-			}
-		} catch (Exception e) {
-			System.out.println("连接失败："+e);
-		}
-	}
+    @Override
+    public void connect() {
+        try {
+            System.out.println("开始连接");
+            ChannelFuture future = b.connect(host.getHost(), host.getPort());
+            boolean ret = future.awaitUninterruptibly(Constants.DEFAULT_TIMEOUT, TimeUnit
+                    .MILLISECONDS);
+            if (ret && future.isSuccess()) {
+                Channel newChannel = future.channel();
+                nowChannel = newChannel;
+                ChannelManager channelManager = new ClientChannelManager(newChannel, this,
+                        hostName);
+                channelManager.setConnectCount(host.getConnectionCount());
+                ChannelManagerClientSingle.put(hostName, channelManager);
+                System.out.println("新连接:" + nowChannel + "\t" + ChannelManagerClientSingle
+                        .getChannelManagerMap().get(hostName).size());
+            }
+        } catch (Exception e) {
+            System.out.println("连接失败：" + e);
+        }
+    }
 
-	@Override
-	public void doConnect() {
-		// TODO Auto-generated method stub
-		while(!(nowChannel.isActive())){
-			connect();
+    @Override
+    public void doConnect() {
+        // TODO Auto-generated method stub
+        while (!(nowChannel.isActive())) {
+            connect();
             try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             System.out.println("无限尝试新连接……");
-		}
-	}
+        }
+    }
 
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		System.out.println("开始断开");
-		if(nowChannel!=null){
-			group.shutdownGracefully();
-			nowChannel.close();
-			nowChannel=null;
-		}
-		
-	}
+    @Override
+    public void stop() {
+        // TODO Auto-generated method stub
+        System.out.println("开始断开");
+        if (nowChannel != null) {
+            group.shutdownGracefully();
+            nowChannel.close();
+            nowChannel = null;
+        }
+
+    }
 
 }

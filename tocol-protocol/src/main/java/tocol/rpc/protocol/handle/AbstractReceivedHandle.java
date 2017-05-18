@@ -1,33 +1,35 @@
 package tocol.rpc.protocol.handle;
 
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tocol.rpc.protocol.Protocol;
 
 public abstract class AbstractReceivedHandle<T> implements ReceivedHandle<T> {
 
-	protected final Protocol protocol;
+    private Logger LOG = LoggerFactory.getLogger(AbstractReceivedHandle.class);
 
-	public AbstractReceivedHandle(Protocol protocol) {
-		super();
-		this.protocol = protocol;
-	}
+    protected final Protocol protocol;
 
-	public abstract void receivedObject(T channel, Object obj);
+    public AbstractReceivedHandle(Protocol protocol) {
+        super();
+        this.protocol = protocol;
+    }
 
-	@Override
-	public Object received(T channel, Object obj) {
-		Object o = null;
-		if (obj instanceof ByteBuf) {
-			try {
-				o = protocol.decoder((ByteBuf) obj);
-				receivedObject(channel, o);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+    public abstract void receivedObject(T channel, Object obj);
 
-		return o;
-	}
+    @Override
+    public Object received(T channel, Object obj) {
+        Object o = null;
+        if (obj instanceof ByteBuf) {
+            try {
+                o = protocol.decoder((ByteBuf) obj);
+                receivedObject(channel, o);
+            } catch (Exception e) {
+                LOG.error("Unexpected exception: " + e);
+            }
+        }
+        return o;
+    }
 
 }

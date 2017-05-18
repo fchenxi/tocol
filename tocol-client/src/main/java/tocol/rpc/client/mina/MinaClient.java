@@ -4,30 +4,24 @@ import tocol.rpc.client.Client;
 import tocol.rpc.client.load.Hosts;
 
 public class MinaClient implements Client {
-	
-	private final Hosts host;
 
-	public MinaClient(Hosts host) {
-		super();
-		this.host = host;
-	}
+    private final Hosts host;
 
-	@Override
-	public void connect() {
-		// TODO Auto-generated method stub
+    public MinaClient(Hosts host) {
+        super();
+        this.host = host;
+    }
 
-	}
+    @Override
+    public void connect() {
+    }
 
-	@Override
-	public void doConnect() {
-		// TODO Auto-generated method stub
+    @Override
+    public void doConnect() {
+    }
 
-	}
-
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-
-	}
+    @Override
+    public void stop() {
+    }
 
 }

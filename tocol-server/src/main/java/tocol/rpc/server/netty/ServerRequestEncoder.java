@@ -8,19 +8,18 @@ import tocol.rpc.protocol.params.ResponseParams;
 
 public class ServerRequestEncoder extends MessageToByteEncoder<ResponseParams> {
 
-	private final Protocol protocol;
+    private final Protocol protocol;
 
-	public ServerRequestEncoder(Protocol protocol) {
-		super();
-		this.protocol = protocol;
-	}
+    public ServerRequestEncoder(Protocol protocol) {
+        super();
+        this.protocol = protocol;
+    }
 
-	@Override
-	protected void encode(ChannelHandlerContext arg0, ResponseParams arg1,
-			ByteBuf arg2) throws Exception {
-		// TODO Auto-generated method stub
-		protocol.encoder(arg2, arg1);
-		arg0.flush();
-	}
+    @Override
+    protected void encode(ChannelHandlerContext arg0, ResponseParams arg1,
+                          ByteBuf arg2) throws Exception {
+        protocol.encoder(arg2, arg1);
+        arg0.flush();
+    }
 
 }

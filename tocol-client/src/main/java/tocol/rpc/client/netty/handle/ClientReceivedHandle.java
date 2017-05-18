@@ -10,19 +10,18 @@ import tocol.rpc.protocol.params.ResponseParams;
 
 public class ClientReceivedHandle extends AbstractReceivedHandle<Channel> {
 
-	public ClientReceivedHandle(Protocol<ByteBuf> protocol) {
-		super(protocol);
-	}
+    public ClientReceivedHandle(Protocol<ByteBuf> protocol) {
+        super(protocol);
+    }
 
-	@Override
-	public void receivedObject(Channel channel, Object obj) {
-		// TODO Auto-generated method stub
-		if (obj instanceof ResponseParams) {
-			ResponseParams response = (ResponseParams) obj;
-			if(Constants.MessageTypeService.equals(response.getMessageType())){
-				ResponseFuture.received(response);
-			}
-		}
-	}
+    @Override
+    public void receivedObject(Channel channel, Object obj) {
+        if (obj instanceof ResponseParams) {
+            ResponseParams response = (ResponseParams) obj;
+            if (Constants.MessageTypeService.equals(response.getMessageType())) {
+                ResponseFuture.received(response);
+            }
+        }
+    }
 
 }

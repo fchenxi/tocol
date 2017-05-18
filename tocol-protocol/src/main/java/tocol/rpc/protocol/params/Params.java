@@ -2,135 +2,130 @@ package tocol.rpc.protocol.params;
 
 import java.io.Serializable;
 
-/**
- * 
- * @author Administrator
- * 
- */
 public abstract class Params implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String method;//
-	private String serviceName;//
-	private String version = Constants.version;//
-	private String protocol = Constants.HESSIAN;//
-	private String messageType=Constants.MessageTypeService;
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private String method;//
+    private String serviceName;//
+    private String version = Constants.version;//
+    private String protocol = Constants.HESSIAN;//
+    private String messageType = Constants.MessageTypeService;
 
-	private String host;//
-	private int port;//
-	private transient boolean keepalive = true;//
-	private transient boolean heartbeat;//
-	private transient int heartbeatTime;//
-	private long id;
-	private transient String message;
-	private transient String status;
-	
-	public String getMessageType() {
-		return messageType;
-	}
 
-	public void setMessageType(String messageType) {
-		this.messageType = messageType;
-	}
+    private String host;//
+    private int port;//
+    private transient boolean keepalive = true;//
+    private transient boolean heartbeat;//
+    private transient int heartbeatTime;//
+    private long id;
+    private transient String message;
+    private transient String status;
 
-	public String getStatus() {
-		return status;
-	}
+    public String getMessageType() {
+        return messageType;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public boolean isHeartbeat() {
-		return heartbeat;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setHeartbeat(boolean heartbeat) {
-		this.heartbeat = heartbeat;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public int getHeartbeatTime() {
-		return heartbeatTime;
-	}
+    public boolean isHeartbeat() {
+        return heartbeat;
+    }
 
-	public void setHeartbeatTime(int heartbeatTime) {
-		this.heartbeatTime = heartbeatTime;
-	}
+    public void setHeartbeat(boolean heartbeat) {
+        this.heartbeat = heartbeat;
+    }
 
-	public boolean isKeepalive() {
-		return keepalive;
-	}
+    public int getHeartbeatTime() {
+        return heartbeatTime;
+    }
 
-	public void setKeepalive(boolean keepalive) {
-		this.keepalive = keepalive;
-	}
+    public void setHeartbeatTime(int heartbeatTime) {
+        this.heartbeatTime = heartbeatTime;
+    }
 
-	public String getHost() {
-		return host;
-	}
+    public boolean isKeepalive() {
+        return keepalive;
+    }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public void setKeepalive(boolean keepalive) {
+        this.keepalive = keepalive;
+    }
 
-	public int getPort() {
-		return port;
-	}
+    public String getHost() {
+        return host;
+    }
 
-	public void setPort(int port) {
-		this.port = port;
-	}
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-	public String getMethod() {
-		return method;
-	}
+    public int getPort() {
+        return port;
+    }
 
-	public void setMethod(String method) {
-		this.method = method;
-	}
+    public void setPort(int port) {
+        this.port = port;
+    }
 
-	public String getServiceName() {
-		return serviceName;
-	}
+    public String getMethod() {
+        return method;
+    }
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getServiceName() {
+        return serviceName;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
 
-	public String getProtocol() {
-		return protocol;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 
 }

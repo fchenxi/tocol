@@ -13,27 +13,29 @@ import tocol.rpc.protocol.handle.ReceivedHandle;
 import tocol.rpc.server.Server;
 
 public class ServerChannelPipelineFactory extends
-		ChannelInitializer<SocketChannel> {
-	private final ReceivedHandle<Channel> receivedHandle;
-	private final Protocol<ByteBuf> protocol;
+        ChannelInitializer<SocketChannel> {
+    private final ReceivedHandle<Channel> receivedHandle;
+    private final Protocol<ByteBuf> protocol;
     private final Server server;
-	private final String hostName;
-	public ServerChannelPipelineFactory(Server server,ReceivedHandle<Channel> receivedHandle,Protocol<ByteBuf> protocol,String hostName) {
-		super();
-		this.server=server;
-		this.receivedHandle = receivedHandle;
-		this.protocol = protocol;
-		this.hostName=hostName;
-	}
+    private final String hostName;
 
-	@Override
-	protected void initChannel(SocketChannel ch) throws Exception {
-		ChannelPipeline pipeline = ch.pipeline();
-		pipeline.addLast(new LengthFieldPrepender(4));// 4个字节存放长度
-		pipeline.addLast(new ServerRequestEncoder(protocol));
-		pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0,4));
-		pipeline.addLast(new IdleStateHandler(30, 0, 0));
-		pipeline.addLast(new ServerHandlerAdapter(server,receivedHandle,hostName));
-	}
+    public ServerChannelPipelineFactory(Server server, ReceivedHandle<Channel> receivedHandle,
+                                        Protocol<ByteBuf> protocol, String hostName) {
+        super();
+        this.server = server;
+        this.receivedHandle = receivedHandle;
+        this.protocol = protocol;
+        this.hostName = hostName;
+    }
+
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addLast(new LengthFieldPrepender(4));// 4个字节存放长度
+        pipeline.addLast(new ServerRequestEncoder(protocol));
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4));
+        pipeline.addLast(new IdleStateHandler(30, 0, 0));
+        pipeline.addLast(new ServerHandlerAdapter(server, receivedHandle, hostName));
+    }
 
 }

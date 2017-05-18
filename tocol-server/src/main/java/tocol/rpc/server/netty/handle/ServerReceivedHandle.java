@@ -11,31 +11,30 @@ import tocol.rpc.server.invoker.InvokerResult;
 
 public class ServerReceivedHandle extends AbstractReceivedHandle<Channel> {
 
-	private final SendHandle<Channel> sendHandle;
+    private final SendHandle<Channel> sendHandle;
 
-	@Override
-	public void receivedObject(Channel channel, Object obj) {
-		// TODO Auto-generated method stub
-		if (obj instanceof RequestParams) {
-			RequestParams request = (RequestParams) obj;
-			ResponseParams response = new ResponseParams(request.getId());
-			//请求服务的包
-			if (Constants.MessageTypeService.equals(request.getMessageType())) {
-				Object result = InvokerResult.invoke(request);
-				response.setValue(result);
-			}
-			response.setMessageType(request.getMessageType());
-			response.setMethod(request.getMethod());
-			response.setVersion(request.getVersion());
-			response.setServiceName(request.getServiceName());
-			response.setProtocol(request.getProtocol());
-			sendHandle.send(channel, response);
-		}
-	}
+    @Override
+    public void receivedObject(Channel channel, Object obj) {
+        if (obj instanceof RequestParams) {
+            RequestParams request = (RequestParams) obj;
+            ResponseParams response = new ResponseParams(request.getId());
+            // request package
+            if (Constants.MessageTypeService.equals(request.getMessageType())) {
+                Object result = InvokerResult.invoke(request);
+                response.setValue(result);
+            }
+            response.setMessageType(request.getMessageType());
+            response.setMethod(request.getMethod());
+            response.setVersion(request.getVersion());
+            response.setServiceName(request.getServiceName());
+            response.setProtocol(request.getProtocol());
+            sendHandle.send(channel, response);
+        }
+    }
 
-	public ServerReceivedHandle(SendHandle sendHandle, Protocol protocol) {
-		super(protocol);
-		this.sendHandle = sendHandle;
-	}
+    public ServerReceivedHandle(SendHandle sendHandle, Protocol protocol) {
+        super(protocol);
+        this.sendHandle = sendHandle;
+    }
 
 }

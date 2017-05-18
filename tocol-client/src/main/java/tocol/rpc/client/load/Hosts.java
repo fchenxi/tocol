@@ -2,63 +2,64 @@ package tocol.rpc.client.load;
 
 public class Hosts {
 
-	public Hosts(String host, int port) {
-		super();
-		this.host = host;
-		this.port = port;
-	}
+    public Hosts(String host, int port) {
+        super();
+        this.host = host;
+        this.port = port;
+    }
 
-	private String host;
-	private int port;//
-	private String path;
-	private int timeout;
+    private String host;
+    private int port;//
+    private String path;
+    private int timeout;
     private int connectionCount;//TCP连接数
     private String serverName;
-	public String getServerName() {
-		return serverName;
-	}
 
-	public void setServerName(String serverName) {
-		this.serverName = serverName;
-	}
+    public String getServerName() {
+        return serverName;
+    }
 
-	public int getConnectionCount() {
-		return connectionCount;
-	}
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
 
-	public void setConnectionCount(int connectionCount) {
-		this.connectionCount = connectionCount;
-	}
+    public int getConnectionCount() {
+        return connectionCount;
+    }
 
-	public int getTimeout() {
-		return timeout;
-	}
+    public void setConnectionCount(int connectionCount) {
+        this.connectionCount = connectionCount;
+    }
 
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
-	}
+    public int getTimeout() {
+        return timeout;
+    }
 
-	public String getHost() {
-		return host;
-	}
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public String getHost() {
+        return host;
+    }
 
-	public int getPort() {
-		return port;
-	}
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-	public void setPort(int port) {
-		this.port = port;
-	}
+    public int getPort() {
+        return port;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public void setPort(int port) {
+        this.port = port;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
